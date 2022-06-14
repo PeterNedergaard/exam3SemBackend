@@ -15,7 +15,7 @@
 
         <!-- IMPORTANT-1: If your server uses https (via NGINX) use your DOMAIN NAME and https below: -->
         <!-- IMPORTANT-2: Observe we are NOT using /manager/html but /manager/text for script uploads --> 
-	<remote.server>https://edu.bugelhartmann.dk/manager/text</remote.server>
+	<remote.server>https://www.peternedergaard.xyz/manager/text</remote.server>
 
         <!-- IMPORTANT-1: The database should exist on your droplet -->
         <db.name>sem3exam</db.name>
