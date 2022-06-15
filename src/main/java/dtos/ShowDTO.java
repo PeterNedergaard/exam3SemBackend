@@ -36,7 +36,7 @@ public class ShowDTO {
     }
 
 
-    public List<ShowDTO> getShowDTOs(List<ShowEntity> showList) {
+    public static List<ShowDTO> getShowDTOs(List<ShowEntity> showList) {
         List<ShowDTO> showDTOList = new ArrayList<>();
 
         for (ShowEntity s : showList) {

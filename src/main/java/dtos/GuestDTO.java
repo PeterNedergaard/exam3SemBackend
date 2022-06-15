@@ -31,7 +31,7 @@ public class GuestDTO {
         this.status = guest.getStatus();
     }
 
-    public List<GuestDTO> GuestDTO(List<Guest> guestList) {
+    public static List<GuestDTO> GuestDTO(List<Guest> guestList) {
         List<GuestDTO> guestDTOList = new ArrayList<>();
 
         for (Guest g : guestList) {

@@ -143,7 +143,7 @@ class IfacadeTest {
 
     @Test
     void getShowsByGuest() {
-        System.out.println("Test for getting a specific users shows");
+        System.out.println("Test for getting a specific geusts shows");
 
         int expected = 2;
         int actual = facade.getShowsByGuest(facade.getGuestByEmail("Email1")).size();
