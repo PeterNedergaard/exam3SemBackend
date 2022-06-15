@@ -84,18 +84,51 @@ public class Facade implements Ifacade{
 
     @Override
     public Festival updateFestival(Festival festivalToUpdate, Festival updatedFestival) {
-        return null;
+
+        festivalToUpdate.setName(updatedFestival.getName());
+        festivalToUpdate.setCity(updatedFestival.getCity());
+        festivalToUpdate.setStartDate(updatedFestival.getStartDate());
+        festivalToUpdate.setDuration(updatedFestival.getDuration());
+
+        em.getTransaction().begin();
+        em.merge(festivalToUpdate);
+        em.getTransaction().commit();
+
+        return festivalToUpdate;
     }
 
     @Override
     public Guest updateGuest(Guest guestToUpdate, Guest updatedGuest) {
-        return null;
+
+        guestToUpdate.setName(updatedGuest.getName());
+        guestToUpdate.setPhone(updatedGuest.getPhone());
+        guestToUpdate.setEmail(updatedGuest.getEmail());
+        guestToUpdate.setStatus(updatedGuest.getStatus());
+
+        em.getTransaction().begin();
+        em.merge(guestToUpdate);
+        em.getTransaction().commit();
+
+        return guestToUpdate;
     }
 
     @Override
     public ShowEntity updateShow(ShowEntity showToUpdate, ShowEntity updatedShow) {
-        return null;
+
+        showToUpdate.setName(updatedShow.getName());
+        showToUpdate.setDuration(updatedShow.getDuration());
+        showToUpdate.setLocation(updatedShow.getLocation());
+        showToUpdate.setStartDate(updatedShow.getStartDate());
+        showToUpdate.setStartTime(updatedShow.getStartTime());
+
+        em.getTransaction().begin();
+        em.merge(showToUpdate);
+        em.getTransaction().commit();
+
+        return showToUpdate;
     }
+
+
 
     @Override
     public List<Guest> getAllGuests() {

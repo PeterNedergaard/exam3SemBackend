@@ -193,13 +193,31 @@ class IfacadeTest {
 
     @Test
     void updateFestival() {
+        System.out.println("Test for updating a festival");
+
+        Festival expected = new Festival("UpdatedName","UpdatedCity","UpdatedStartDate",1);
+        Festival actual = facade.updateFestival(festival1,expected);
+
+        assertEquals(expected,actual);
     }
 
     @Test
     void updateGuest() {
+        System.out.println("Test for updating a guest");
+
+        Guest expected = new Guest("UpdatedName","UpdatedPhone","UpdatedEmail","UpdatedStatus");
+        Guest actual = facade.updateGuest(guest1,expected);
+
+        assertEquals(expected,actual);
     }
 
     @Test
     void updateShow() {
+        System.out.println("Test for updating a show");
+
+        ShowEntity expected = new ShowEntity("UpdatedName",1,"UpdatedLocation","UpdatedStartDate","UpdatedStartTime");
+        ShowEntity actual = facade.updateShow(show1,expected);
+
+        assertEquals(expected,actual);
     }
 }

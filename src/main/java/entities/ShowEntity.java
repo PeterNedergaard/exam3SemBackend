@@ -3,6 +3,7 @@ package entities;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class ShowEntity { //For some reason, I get errors when the entity is simply called 'Show'. It might be a reserved keyword
@@ -97,5 +98,18 @@ public class ShowEntity { //For some reason, I get errors when the entity is sim
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ShowEntity that = (ShowEntity) o;
+        return duration == that.duration && Objects.equals(name, that.name) && Objects.equals(location, that.location) && Objects.equals(startDate, that.startDate) && Objects.equals(startTime, that.startTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, duration, location, startDate, startTime);
     }
 }
