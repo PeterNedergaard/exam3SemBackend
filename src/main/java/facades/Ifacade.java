@@ -26,14 +26,9 @@ public interface Ifacade {
 
     ShowEntity updateShow(ShowEntity showToUpdate, ShowEntity updatedShow);
 
-    Guest getGuestByEmail(String email);
-
     List<Guest> getAllGuests();
-
-    ShowEntity getShowByName(String showName);
 
     List<Festival> getAllFestivals();
 
-    Festival getFestivalByName(String festivalName);
 
 }
