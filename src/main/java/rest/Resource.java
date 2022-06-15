@@ -383,4 +383,28 @@ public class Resource {
                 .entity(new ShowDTO(facade.updateShow(showToUpdate,updatedShow)))
                 .build();
     }
+
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("deleteshow")
+    public void deleteShow(String jsonString) throws API_Exception {
+
+        ShowEntity show;
+        Long showId;
+
+        try{
+            JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
+
+            showId = json.get("showId").getAsLong();
+
+        } catch (Exception e) {
+            throw new API_Exception("Malformed JSON Suplied", 400, e);
+        }
+
+        show = em.find(ShowEntity.class,showId);
+
+        facade.deleteShow(show);
+    }
 }

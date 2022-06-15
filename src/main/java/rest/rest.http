@@ -93,3 +93,10 @@ updatedLocation: "OldLocation",
 updatedStartDate: "OldDate",
 updatedStartTime: "OldTime"
 }
+
+###
+POST http://localhost:8080/sem3ExamBackend_war_exploded/api/info/deleteshow
+
+{
+showId: "5"
+}

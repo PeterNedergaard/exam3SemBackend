@@ -18,6 +18,8 @@ public class Facade implements Ifacade{
     public Facade() {
     }
 
+
+    //Get a facade with a specific EMF
     public static Facade getFacade(EntityManagerFactory _emf) {
         if (instance == null) {
             emf = _emf;
@@ -26,7 +28,6 @@ public class Facade implements Ifacade{
         }
         return instance;
     }
-
 
 
 
