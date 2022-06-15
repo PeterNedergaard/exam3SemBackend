@@ -19,7 +19,7 @@ GET http://localhost:8080/sem3ExamBackend_war_exploded/api/info/allfestivals
 
 
 ###
-GET http://localhost:8080/sem3ExamBackend_war_exploded/api/info/showsbyguest/Email1
+GET http://localhost:8080/sem3ExamBackend_war_exploded/api/info/showsbyguest/3
 
 ###
 POST http://localhost:8080/sem3ExamBackend_war_exploded/api/info/addguesttoshow

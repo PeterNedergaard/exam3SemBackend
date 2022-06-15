@@ -200,7 +200,7 @@ public class ResourceTest {
         List<ShowDTO> actualShowList = given()
                 .contentType("application/json")
                 .when()
-                .get("/info/showsbyguest/" + guest1.getEmail())
+                .get("/info/showsbyguest/" + guest1.getId())
                 .then()
                 .extract().body().jsonPath().getList("",ShowDTO.class);
 
@@ -211,8 +211,11 @@ public class ResourceTest {
     public void addGuestToShow() {
         System.out.println("Testing to add guest to a show");
 
-        String json = "{'guestEmail':'Email2','showName':'Show3'}";
-        JsonObject body = (JsonObject) JsonParser.parseString(json);
+        JSONObject json = new JSONObject();
+        json.put("guestId",guest2.getId());
+        json.put("showId",show3.getId());
+
+        JsonObject body = (JsonObject) JsonParser.parseString(json.toJSONString());
 
         GuestDTO expectedGuestDTO = given()
                 .contentType("application/json").body(body)
@@ -221,7 +224,8 @@ public class ResourceTest {
                 .then()
                 .extract().body().jsonPath().getObject("",GuestDTO.class);
 
-        assertThat(guest2.getName(), equalTo(expectedGuestDTO.getName()));
+
+        assertThat(guest2.getId(), equalTo(expectedGuestDTO.getId()));
     }
 
     @Test
@@ -241,7 +245,7 @@ public class ResourceTest {
                 .then()
                 .extract().body().jsonPath().getObject("",FestivalDTO.class);
 
-        assertThat(actualFestivalDTO.getName(), equalTo(expectedFestivalDTO.getName()));
+        assertThat(actualFestivalDTO, equalTo(expectedFestivalDTO));
     }
 
     @Test
@@ -261,7 +265,7 @@ public class ResourceTest {
                 .then()
                 .extract().body().jsonPath().getObject("",ShowDTO.class);
 
-        assertThat(actualShowDTO.getName(), equalTo(expectedShowDTO.getName()));
+        assertThat(actualShowDTO, equalTo(expectedShowDTO));
     }
 
     @Test
@@ -281,7 +285,7 @@ public class ResourceTest {
                 .then()
                 .extract().body().jsonPath().getObject("",GuestDTO.class);
 
-        assertThat(actualGuestDTO.getName(), equalTo(expectedGuestDTO.getName()));
+        assertThat(actualGuestDTO, equalTo(expectedGuestDTO));
     }
 
     @Test
@@ -290,8 +294,10 @@ public class ResourceTest {
 
         Festival updatedFestival = new Festival("NewestName","NewestCity","NewestStartdate",14);
 
+        FestivalDTO updatedFestivalDTO = new FestivalDTO(updatedFestival);
+
         JSONObject json = new JSONObject();
-        json.put("name",festival2.getName());
+        json.put("festivalId",festival2.getId());
         json.put("updatedName",updatedFestival.getName());
         json.put("updatedCity",updatedFestival.getCity());
         json.put("updatedStartDate",updatedFestival.getStartDate());
@@ -307,7 +313,7 @@ public class ResourceTest {
                 .then()
                 .extract().body().jsonPath().getObject("",FestivalDTO.class);
 
-        assertThat(updatedFestival.getName(), equalTo(expectedFestivalDTO.getName()));
+        assertThat(updatedFestivalDTO, equalTo(expectedFestivalDTO));
     }
 
     @Test
@@ -315,9 +321,10 @@ public class ResourceTest {
         System.out.println("Testing to update a guest");
 
         Guest updatedGuest = new Guest("NewName","NewPhone","NewEmail","NewStatus");
+        GuestDTO updatedGuestDTO = new GuestDTO(updatedGuest);
 
         JSONObject json = new JSONObject();
-        json.put("email",guest1.getEmail());
+        json.put("guestId",guest1.getId());
         json.put("updatedName",updatedGuest.getName());
         json.put("updatedPhone",updatedGuest.getPhone());
         json.put("updatedEmail",updatedGuest.getEmail());
@@ -333,7 +340,7 @@ public class ResourceTest {
                 .then()
                 .extract().body().jsonPath().getObject("",GuestDTO.class);
 
-        assertThat(updatedGuest.getName(), equalTo(expectedGuestDTO.getName()));
+        assertThat(updatedGuestDTO, equalTo(expectedGuestDTO));
     }
 
     @Test
@@ -341,9 +348,10 @@ public class ResourceTest {
         System.out.println("Testing to update a show");
 
         ShowEntity updatedShow = new ShowEntity("NewShow",45,"NewLocation","NewStartDate","NewStartTime");
+        ShowDTO updatedShowDTO = new ShowDTO(updatedShow);
 
         JSONObject json = new JSONObject();
-        json.put("name",show1.getName());
+        json.put("showId",show1.getId());
         json.put("updatedName",updatedShow.getName());
         json.put("updatedDuration",updatedShow.getDuration());
         json.put("updatedLocation",updatedShow.getLocation());
@@ -360,7 +368,7 @@ public class ResourceTest {
                 .then()
                 .extract().body().jsonPath().getObject("",ShowDTO.class);
 
-        assertThat(updatedShow.getName(), equalTo(expectedShowDTO.getName()));
+        assertThat(updatedShowDTO, equalTo(expectedShowDTO));
     }
 
 

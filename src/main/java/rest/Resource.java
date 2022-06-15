@@ -30,6 +30,7 @@ import utils.EMF_Creator;
 public class Resource {
     
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
+    private static final EntityManager em = EMF.createEntityManager();
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     Facade facade = Facade.getFacade(EMF_Creator.createEntityManagerFactory());
 
@@ -123,10 +124,13 @@ public class Resource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("showsbyguest/{email}")
-    public Response getShowsByGuest(@PathParam("email") String email) {
+    @Path("showsbyguest/{id}")
+    public Response getShowsByGuest(@PathParam("id") Long id) {
 
-        List<ShowDTO> showDTOList = ShowDTO.getShowDTOs(facade.getShowsByGuest(facade.getGuestByEmail(email)));
+//        List<ShowDTO> showDTOList = ShowDTO.getShowDTOs(facade.getShowsByGuest(facade.getGuestByEmail(email)));
+        Guest guest = em.find(Guest.class, id);
+
+        List<ShowDTO> showDTOList = ShowDTO.getShowDTOs(facade.getShowsByGuest(guest));
 
         return Response
                 .ok()
@@ -145,24 +149,23 @@ public class Resource {
         Guest guest;
         ShowEntity show;
 
-        String guestEmail;
-        String showName;
+        Long guestId;
+        Long showId;
 
         try{
             JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
 
-            guestEmail = json.get("guestEmail").getAsString();
-            showName = json.get("showName").getAsString();
+            guestId = json.get("guestId").getAsLong();
+            showId = json.get("showId").getAsLong();
 
         } catch (Exception e) {
             throw new API_Exception("Malformed JSON Suplied", 400, e);
         }
 
-        guest = facade.getGuestByEmail(guestEmail);
-        show = facade.getShowByName(showName);
+        guest = em.find(Guest.class,guestId);
+        show = em.find(ShowEntity.class,showId);
 
         GuestDTO guestDTO = new GuestDTO(facade.addGuestToShow(guest,show));
-        System.out.println(guestDTO.getName());
 
         return Response
                 .ok()
@@ -276,7 +279,7 @@ public class Resource {
     public Response updateFestival(String jsonString) throws API_Exception {
 
         Festival festivalToUpdate;
-        String name;
+        Long festivalId;
 
         Festival updatedFestival;
         String updatedName;
@@ -286,7 +289,7 @@ public class Resource {
 
         try{
             JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
-            name = json.get("name").getAsString();
+            festivalId = json.get("festivalId").getAsLong();
             updatedName = json.get("updatedName").getAsString();
             updatedCity = json.get("updatedCity").getAsString();
             updatedStartDate = json.get("updatedStartDate").getAsString();
@@ -296,7 +299,7 @@ public class Resource {
             throw new API_Exception("Malformed JSON Suplied", 400, e);
         }
 
-        festivalToUpdate = facade.getFestivalByName(name);
+        festivalToUpdate = em.find(Festival.class,festivalId);
         updatedFestival = new Festival(updatedName,updatedCity,updatedStartDate,updatedDuration);
 
         return Response
@@ -313,7 +316,7 @@ public class Resource {
     public Response updateGuest(String jsonString) throws API_Exception {
 
         Guest guestToUpdate;
-        String email;
+        Long guestId;
 
         Guest updatedGuest;
         String updatedName;
@@ -323,7 +326,7 @@ public class Resource {
 
         try{
             JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
-            email = json.get("email").getAsString();
+            guestId = json.get("guestId").getAsLong();
             updatedName = json.get("updatedName").getAsString();
             updatedPhone = json.get("updatedPhone").getAsString();
             updatedEmail = json.get("updatedEmail").getAsString();
@@ -333,7 +336,7 @@ public class Resource {
             throw new API_Exception("Malformed JSON Suplied", 400, e);
         }
 
-        guestToUpdate = facade.getGuestByEmail(email);
+        guestToUpdate = em.find(Guest.class,guestId);
         updatedGuest = new Guest(updatedName,updatedPhone,updatedEmail,updatedStatus);
 
         return Response
@@ -350,7 +353,7 @@ public class Resource {
     public Response updateShow(String jsonString) throws API_Exception {
 
         ShowEntity showToUpdate;
-        String name;
+        Long showId;
 
         ShowEntity updatedShow;
         String updatedName;
@@ -361,7 +364,7 @@ public class Resource {
 
         try{
             JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
-            name = json.get("name").getAsString();
+            showId = json.get("showId").getAsLong();
             updatedName = json.get("updatedName").getAsString();
             updatedDuration = json.get("updatedDuration").getAsInt();
             updatedLocation = json.get("updatedLocation").getAsString();
@@ -372,7 +375,7 @@ public class Resource {
             throw new API_Exception("Malformed JSON Suplied", 400, e);
         }
 
-        showToUpdate = facade.getShowByName(name);
+        showToUpdate = em.find(ShowEntity.class,showId);
         updatedShow = new ShowEntity(updatedName,updatedDuration,updatedLocation,updatedStartDate,updatedStartTime);
 
         return Response
