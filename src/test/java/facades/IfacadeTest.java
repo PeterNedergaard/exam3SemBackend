@@ -17,6 +17,12 @@ class IfacadeTest {
     static EntityManagerFactory emf;
     static EntityManager em;
 
+
+    private static Guest guest1, guest2, guest3;
+    private static ShowEntity show1, show2, show3;
+    private static Festival festival1, festival2;
+
+
     @BeforeEach
     void setUp() {
 
@@ -38,17 +44,17 @@ class IfacadeTest {
 
 
 
-        Guest guest1 = new Guest("Guest1","Phone1","Email1","Status1");
-        Guest guest2 = new Guest("Guest2","Phone2","Email2","Status2");
-        Guest guest3 = new Guest("Guest3","Phone3","Email3","Status3");
+        guest1 = new Guest("Guest1","Phone1","Email1","Status1");
+        guest2 = new Guest("Guest2","Phone2","Email2","Status2");
+        guest3 = new Guest("Guest3","Phone3","Email3","Status3");
 
-        ShowEntity show1 = new ShowEntity("Show1",160,"Location1","15-06-2022","13:15");
-        ShowEntity show2 = new ShowEntity("Show2",90,"Location2","16-06-2022","10:00");
-        ShowEntity show3 = new ShowEntity("Show3",30,"Location3","17-06-2022","15:30");
+        show1 = new ShowEntity("Show1",160,"Location1","15-06-2022","13:15");
+        show2 = new ShowEntity("Show2",90,"Location2","16-06-2022","10:00");
+        show3 = new ShowEntity("Show3",30,"Location3","17-06-2022","15:30");
 
 
-        Festival festival1 = new Festival("Festival1","City1","13-06-2022",7);
-        Festival festival2 = new Festival("Festival2","City2","10-06-2022",7);
+        festival1 = new Festival("Festival1","City1","13-06-2022",7);
+        festival2 = new Festival("Festival2","City2","10-06-2022",7);
 
 
 
@@ -64,6 +70,12 @@ class IfacadeTest {
 
         try {
             em.getTransaction().begin();
+
+            em.createQuery("delete from Guest").executeUpdate();
+            em.createQuery("delete from ShowEntity").executeUpdate();
+            em.createQuery("delete from Festival").executeUpdate();
+            em.createQuery("delete from Role").executeUpdate();
+            em.createQuery("delete from User").executeUpdate();
 
             em.persist(userRole);
             em.persist(adminRole);
@@ -123,8 +135,8 @@ class IfacadeTest {
     void getGuestByEmail() {
         System.out.println("Test for getting specific guest by email");
 
-        String expected = "Guest1";
-        String actual = facade.getGuestByEmail("Email1").getName();
+        Guest expected = guest1;
+        Guest actual = facade.getGuestByEmail("Email1");
 
         assertEquals(expected,actual);
     }
@@ -135,18 +147,38 @@ class IfacadeTest {
 
         int expected = 2;
         int actual = facade.getShowsByGuest(facade.getGuestByEmail("Email1")).size();
+
+        assertEquals(expected,actual);
     }
 
     @Test
     void addGuestToShow() {
+        System.out.println("Test for adding a guest to a show");
+
+        Guest expected = guest1;
+        Guest actual = facade.addGuestToShow(guest1,show3);
+
+        assertEquals(expected,actual);
     }
 
     @Test
     void createFestival() {
+        System.out.println("Test for creating a festival");
+
+        Festival expected = new Festival("NewName","NewCity","NewStartDate",1);
+        Festival actual = facade.createFestival(expected);
+
+        assertEquals(expected,actual);
     }
 
     @Test
     void createShow() {
+        System.out.println("Test for creating a show");
+
+        ShowEntity expected = new ShowEntity("NewName",1,"NewLocation","NewStartDate","NewStartTime");
+        ShowEntity actual = facade.createShow(expected);
+
+        assertEquals(expected,actual);
     }
 
     @Test

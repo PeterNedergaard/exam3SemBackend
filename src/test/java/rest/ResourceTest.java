@@ -77,6 +77,12 @@ public class ResourceTest {
         try{
             em.getTransaction().begin();
 
+            em.createQuery("delete from Guest").executeUpdate();
+            em.createQuery("delete from ShowEntity").executeUpdate();
+            em.createQuery("delete from Festival").executeUpdate();
+            em.createQuery("delete from Role").executeUpdate();
+            em.createQuery("delete from User").executeUpdate();
+
             em.persist(userRole);
             em.persist(adminRole);
             em.persist(user);

@@ -43,17 +43,33 @@ public class Facade implements Ifacade{
 
     @Override
     public Guest addGuestToShow(Guest guest, ShowEntity show) {
+        guest.addShow(show);
+
+        if(show.getGuestList().contains(guest)){
+            return guest;
+        }
+
         return null;
     }
 
     @Override
     public Festival createFestival(Festival festival) {
-        return null;
+
+        em.getTransaction().begin();
+        em.persist(festival);
+        em.getTransaction().commit();
+
+        return em.find(Festival.class,festival.getId());
     }
 
     @Override
     public ShowEntity createShow(ShowEntity show) {
-        return null;
+
+        em.getTransaction().begin();
+        em.persist(show);
+        em.getTransaction().commit();
+
+        return em.find(ShowEntity.class,show.getId());
     }
 
     @Override
