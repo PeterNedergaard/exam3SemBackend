@@ -49,6 +49,7 @@ public class Generate {
 
 
         guest1.addShow(show1);
+        guest1.addShow(show2);
         guest2.addShow(show2);
         guest3.addShow(show3);
 
