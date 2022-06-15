@@ -27,8 +27,8 @@
             <!-- In PRODUCTION the values below, will be overriden by utils.EMF_Creator -->
 <!--            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/startcode?serverTimezone=UTC"/>-->
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/sem3exam?serverTimezone=UTC"/>
-            <property name="javax.persistence.jdbc.user" value="dev"/>
-            <property name="javax.persistence.jdbc.password" value="ax2"/>
+            <property name="javax.persistence.jdbc.user" value="root"/>
+            <property name="javax.persistence.jdbc.password" value="root"/>
             
         </properties>
     </persistence-unit>
@@ -45,8 +45,8 @@
             <property name="eclipselink.canonicalmodel.subpackage" value="ghy636765"/>
 <!--            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/startcode_test?serverTimezone=UTC"/>-->
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/sem3exam_test?serverTimezone=UTC"/>
-            <property name="javax.persistence.jdbc.user" value="dev"/>
-            <property name="javax.persistence.jdbc.password" value="ax2"/>
+            <property name="javax.persistence.jdbc.user" value="root"/>
+            <property name="javax.persistence.jdbc.password" value="root"/>
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
             
              <!-- You can raise the logging level to one of the following values CONFIG, FINE, FINER, FINEST, ALL for better,

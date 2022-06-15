@@ -34,29 +34,40 @@ public class Generate {
 
 
 
-        Guest guest1 = new Guest("Guest1","Phone1","Email1","Status1");
-        Guest guest2 = new Guest("Guest2","Phone2","Email2","Status2");
-        Guest guest3 = new Guest("Guest3","Phone3","Email3","Status3");
+        Guest guest1 = new Guest("Kurt Larsen","29726382","kurt@gmail.com","aktiv");
+        Guest guest2 = new Guest("Svend Knudsen","71926518","svend@knudmail.com","aktiv");
+        Guest guest3 = new Guest("Rasmus Jensen","93517283","rasmus@hotmail.com","aktiv");
+        Guest guest4 = new Guest("Paul Hansen","47192735","pauk@gmail.com","inaktiv");
+        Guest guest5 = new Guest("Bilal Madsen","27192832","bilal@newmail.com","inaktiv");
+        Guest guest6 = new Guest("Kim Rasmussen","37109265","Kim@swanmail.com","aktiv");
 
-        ShowEntity show1 = new ShowEntity("Show1",160,"Location1","15-06-2022","13:15");
-        ShowEntity show2 = new ShowEntity("Show2",90,"Location2","16-06-2022","10:00");
-        ShowEntity show3 = new ShowEntity("Show3",30,"Location3","17-06-2022","15:30");
-
+        ShowEntity show1 = new ShowEntity("Trylleshowet",15,"Scene 5","15-06-2022","13:15");
+        ShowEntity show2 = new ShowEntity("Rasmus Seebach",30,"Store Scene","15-06-2022","19:00");
+        ShowEntity show3 = new ShowEntity("Anders And",60,"Scene 1","16-06-2022","15:30");
+        ShowEntity show4 = new ShowEntity("Kim Larsen",20,"Scene 2","16-06-2022","17:30");
+        ShowEntity show5 = new ShowEntity("Knud Madsen",15,"scene 2","17-06-2022","14:30");
 
         Festival festival1 = new Festival("Festival1","City1","13-06-2022",7);
         Festival festival2 = new Festival("Festival2","City2","10-06-2022",7);
 
 
-
         guest1.addShow(show1);
         guest1.addShow(show2);
         guest2.addShow(show2);
-        guest3.addShow(show3);
+        guest2.addShow(show3);
+        guest3.addShow(show1);
+        guest4.addShow(show4);
+        guest4.addShow(show5);
+        guest5.addShow(show5);
+        guest6.addShow(show4);
+        guest6.addShow(show5);
 
         guest1.setFestival(festival1);
         guest2.setFestival(festival1);
-        guest3.setFestival(festival2);
-
+        guest3.setFestival(festival1);
+        guest4.setFestival(festival2);
+        guest5.setFestival(festival2);
+        guest6.setFestival(festival2);
 
 
         em.getTransaction().begin();
@@ -70,10 +81,15 @@ public class Generate {
         em.persist(guest1);
         em.persist(guest2);
         em.persist(guest3);
+        em.persist(guest4);
+        em.persist(guest5);
+        em.persist(guest6);
 
         em.persist(show1);
         em.persist(show2);
         em.persist(show3);
+        em.persist(show4);
+        em.persist(show5);
 
         em.persist(festival1);
         em.persist(festival2);
