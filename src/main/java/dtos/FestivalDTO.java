@@ -16,8 +16,7 @@ public class FestivalDTO {
     private int duration;
 
 
-    public FestivalDTO(Long id, String name, String city, String startDate, int duration) {
-        this.id = id;
+    public FestivalDTO(String name, String city, String startDate, int duration) {
         this.name = name;
         this.city = city;
         this.startDate = startDate;

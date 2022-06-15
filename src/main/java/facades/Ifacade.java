@@ -30,4 +30,10 @@ public interface Ifacade {
 
     List<Guest> getAllGuests();
 
+    ShowEntity getShowByName(String showName);
+
+    List<Festival> getAllFestivals();
+
+    Festival getFestivalByName(String festivalName);
+
 }

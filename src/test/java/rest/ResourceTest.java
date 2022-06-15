@@ -1,5 +1,10 @@
 package rest;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.nimbusds.jose.shaded.json.JSONObject;
 import dtos.FestivalDTO;
 import dtos.GuestDTO;
 import dtos.ShowDTO;
@@ -9,6 +14,8 @@ import utils.EMF_Creator;
 import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
 import io.restassured.parsing.Parser;
+
+import java.awt.*;
 import java.net.URI;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -34,6 +41,7 @@ public class ResourceTest {
     private static HttpServer httpServer;
     private static EntityManagerFactory emf;
     private static EntityManager em;
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
 
     private static Guest guest1, guest2, guest3;
@@ -197,6 +205,109 @@ public class ResourceTest {
                 .extract().body().jsonPath().getList("",ShowDTO.class);
 
         assertThat(actualShowList, containsInAnyOrder(show1DTO,show2DTO));
+    }
+
+    @Test
+    public void addGuestToShow() {
+        System.out.println("Testing to add guest to a show");
+
+        String json = "{'guestEmail':'Email2','showName':'Show3'}";
+        JsonObject body = (JsonObject) JsonParser.parseString(json);
+
+        GuestDTO expectedGuestDTO = given()
+                .contentType("application/json").body(body)
+                .when()
+                .post("/info/addguesttoshow")
+                .then()
+                .extract().body().jsonPath().getObject("",GuestDTO.class);
+
+        assertThat(guest2.getName(), equalTo(expectedGuestDTO.getName()));
+    }
+
+    @Test
+    public void createFestival() {
+        System.out.println("Testing to create a festival");
+
+        Festival newFestival = new Festival("NewName", "NewCity","NewStartDate",50);
+
+        FestivalDTO actualFestivalDTO = new FestivalDTO(newFestival);
+
+        String body = GSON.toJson(actualFestivalDTO);
+
+        FestivalDTO expectedFestivalDTO = given()
+                .contentType("application/json").body(body)
+                .when()
+                .post("/info/createfestival")
+                .then()
+                .extract().body().jsonPath().getObject("",FestivalDTO.class);
+
+        assertThat(actualFestivalDTO.getName(), equalTo(expectedFestivalDTO.getName()));
+    }
+
+    @Test
+    public void createShow() {
+        System.out.println("Testing to create a show");
+
+        ShowEntity newShow = new ShowEntity("NewestName",25,"NewestLocation","NewestStartDate","NewestStartTime");
+
+        ShowDTO actualShowDTO = new ShowDTO(newShow);
+
+        String body = GSON.toJson(actualShowDTO);
+
+        ShowDTO expectedShowDTO = given()
+                .contentType("application/json").body(body)
+                .when()
+                .post("/info/createshow")
+                .then()
+                .extract().body().jsonPath().getObject("",ShowDTO.class);
+
+        assertThat(actualShowDTO.getName(), equalTo(expectedShowDTO.getName()));
+    }
+
+    @Test
+    public void createGuest() {
+        System.out.println("Testing to create a guest");
+
+        Guest newGuest = new Guest("NewestName","NewestPhone","NewestEmail","NewestStatus");
+
+        GuestDTO actualGuestDTO = new GuestDTO(newGuest);
+
+        String body = GSON.toJson(actualGuestDTO);
+
+        GuestDTO expectedGuestDTO = given()
+                .contentType("application/json").body(body)
+                .when()
+                .post("/info/createguest")
+                .then()
+                .extract().body().jsonPath().getObject("",GuestDTO.class);
+
+        assertThat(actualGuestDTO.getName(), equalTo(expectedGuestDTO.getName()));
+    }
+
+    @Test
+    public void updateFestival() {
+        System.out.println("Testing to update a festival");
+
+        Festival updatedFestival = new Festival("NewestName","NewestCity","NewestStartdate",14);
+
+        JSONObject json = new JSONObject();
+        json.put("name",festival2.getName());
+        json.put("updatedName",updatedFestival.getName());
+        json.put("updatedCity",updatedFestival.getCity());
+        json.put("updatedStartDate",updatedFestival.getStartDate());
+        json.put("updatedDuration",updatedFestival.getDuration());
+
+
+        JsonObject body = (JsonObject) JsonParser.parseString(json.toJSONString());
+
+        FestivalDTO expectedFestivalDTO = given()
+                .contentType("application/json").body(body)
+                .when()
+                .post("/info/updatefestival")
+                .then()
+                .extract().body().jsonPath().getObject("",FestivalDTO.class);
+
+        assertThat(updatedFestival.getName(), equalTo(expectedFestivalDTO.getName()));
     }
 
 

@@ -122,6 +122,16 @@ class IfacadeTest {
     }
 
     @Test
+    void getShowByName() {
+        System.out.println("Test for getting specific show by name");
+
+        ShowEntity expected = show1;
+        ShowEntity actual = facade.getShowByName(show1.getName());
+
+        assertEquals(expected,actual);
+    }
+
+    @Test
     void getAllGuests() {
         System.out.println("Test for getting all guests");
 
@@ -217,6 +227,16 @@ class IfacadeTest {
 
         ShowEntity expected = new ShowEntity("UpdatedName",1,"UpdatedLocation","UpdatedStartDate","UpdatedStartTime");
         ShowEntity actual = facade.updateShow(show1,expected);
+
+        assertEquals(expected,actual);
+    }
+
+    @Test
+    void getFestivalByName() {
+        System.out.println("Test for getting specific festival by name");
+
+        Festival expected = festival1;
+        Festival actual = facade.getFestivalByName("Festival1");
 
         assertEquals(expected,actual);
     }

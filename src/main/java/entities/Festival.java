@@ -23,7 +23,6 @@ public class Festival {
 
 
     public Festival(String name, String city, String startDate, int duration) {
-        this.id = id;
         this.name = name;
         this.city = city;
         this.startDate = startDate;

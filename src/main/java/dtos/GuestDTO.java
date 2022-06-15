@@ -25,7 +25,7 @@ public class GuestDTO {
 
     public GuestDTO(Guest guest) {
         this.id = guest.getId();
-        this.name = getName();
+        this.name = guest.getName();
         this.phone = guest.getPhone();
         this.email = guest.getEmail();
         this.status = guest.getStatus();

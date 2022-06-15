@@ -2,19 +2,24 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import dtos.FestivalDTO;
+import dtos.GuestDTO;
 import dtos.ShowDTO;
+import entities.Festival;
+import entities.Guest;
+import entities.ShowEntity;
 import entities.User;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import javax.ws.rs.Produces;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
 
+import errorhandling.API_Exception;
 import facades.Facade;
 import utils.EMF_Creator;
 
@@ -99,6 +104,177 @@ public class Resource {
         return Response
                 .ok()
                 .entity(gson.toJson(showDTOList))
+                .build();
+    }
+
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("addguesttoshow")
+    public Response addGuestToShow(String jsonString) throws API_Exception {
+
+
+        Guest guest;
+        ShowEntity show;
+
+        String guestEmail;
+        String showName;
+
+        try{
+            JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
+
+            guestEmail = json.get("guestEmail").getAsString();
+            showName = json.get("showName").getAsString();
+
+        } catch (Exception e) {
+            throw new API_Exception("Malformed JSON Suplied", 400, e);
+        }
+
+        guest = facade.getGuestByEmail(guestEmail);
+        show = facade.getShowByName(showName);
+
+        GuestDTO guestDTO = new GuestDTO(facade.addGuestToShow(guest,show));
+        System.out.println(guestDTO.getName());
+
+        return Response
+                .ok()
+                .entity(guestDTO)
+                .build();
+    }
+
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("createfestival")
+    public Response createFestival(String jsonString) throws API_Exception {
+
+        Festival festival;
+        String name;
+        String city;
+        String startDate;
+        int duration;
+
+        try{
+            JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
+            name = json.get("name").getAsString();
+            city = json.get("city").getAsString();
+            startDate = json.get("startDate").getAsString();
+            duration = json.get("duration").getAsInt();
+
+        } catch (Exception e) {
+            throw new API_Exception("Malformed JSON Suplied", 400, e);
+        }
+
+        festival = new Festival(name,city,startDate,duration);
+
+        return Response
+                .ok()
+                .entity(new FestivalDTO(facade.createFestival(festival)))
+                .build();
+    }
+
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("createshow")
+    public Response createShow(String jsonString) throws API_Exception {
+
+        ShowEntity show;
+        String name;
+        int duration;
+        String location;
+        String startDate;
+        String startTime;
+
+        try{
+            JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
+            name = json.get("name").getAsString();
+            duration = json.get("duration").getAsInt();
+            location = json.get("location").getAsString();
+            startDate = json.get("startDate").getAsString();
+            startTime = json.get("startTime").getAsString();
+
+        } catch (Exception e) {
+            throw new API_Exception("Malformed JSON Suplied", 400, e);
+        }
+
+        show = new ShowEntity(name,duration,location,startDate,startTime);
+
+        return Response
+                .ok()
+                .entity(new ShowDTO(facade.createShow(show)))
+                .build();
+    }
+
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("createguest")
+    public Response createGuest(String jsonString) throws API_Exception {
+
+        Guest guest;
+        String name;
+        String phone;
+        String email;
+        String status;
+
+        try{
+            JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
+            name = json.get("name").getAsString();
+            phone = json.get("phone").getAsString();
+            email = json.get("email").getAsString();
+            status = json.get("status").getAsString();;
+
+        } catch (Exception e) {
+            throw new API_Exception("Malformed JSON Suplied", 400, e);
+        }
+
+        guest = new Guest(name,phone,email,status);
+
+        return Response
+                .ok()
+                .entity(new GuestDTO(facade.createGuest(guest)))
+                .build();
+    }
+
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("updatefestival")
+    public Response updateFestival(String jsonString) throws API_Exception {
+
+        Festival festivalToUpdate;
+        String name;
+
+        Festival updatedFestival;
+        String updatedName;
+        String updatedCity;
+        String updatedStartDate;
+        int updatedDuration;
+
+        try{
+            JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
+            name = json.get("name").getAsString();
+            updatedName = json.get("updatedName").getAsString();
+            updatedCity = json.get("updatedCity").getAsString();
+            updatedStartDate = json.get("updatedStartDate").getAsString();
+            updatedDuration = json.get("updatedDuration").getAsInt();
+
+        } catch (Exception e) {
+            throw new API_Exception("Malformed JSON Suplied", 400, e);
+        }
+
+        festivalToUpdate = facade.getFestivalByName(name);
+        updatedFestival = new Festival(updatedName,updatedCity,updatedStartDate,updatedDuration);
+
+        return Response
+                .ok()
+                .entity(new FestivalDTO(facade.updateFestival(festivalToUpdate,updatedFestival)))
                 .build();
     }
 }

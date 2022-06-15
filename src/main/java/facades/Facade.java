@@ -45,6 +45,11 @@ public class Facade implements Ifacade{
     public Guest addGuestToShow(Guest guest, ShowEntity show) {
         guest.addShow(show);
 
+        em.getTransaction().begin();
+        em.merge(guest);
+        em.merge(show);
+        em.getTransaction().commit();
+
         if(show.getGuestList().contains(guest)){
             return guest;
         }
@@ -94,7 +99,7 @@ public class Facade implements Ifacade{
         em.merge(festivalToUpdate);
         em.getTransaction().commit();
 
-        return festivalToUpdate;
+        return em.find(Festival.class,getFestivalByName(updatedFestival.getName()).getId());
     }
 
     @Override
@@ -141,6 +146,35 @@ public class Facade implements Ifacade{
         for (Guest g : getAllGuests()) {
             if (g.getEmail().equals(email)){
                 return g;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public ShowEntity getShowByName(String showName) {
+
+        for (ShowEntity s : getAllShows()) {
+            if (s.getName().equals(showName)){
+                return s;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public List<Festival> getAllFestivals() {
+        return em.createQuery("SELECT f FROM Festival f",Festival.class).getResultList();
+    }
+
+    @Override
+    public Festival getFestivalByName(String festivalName) {
+
+        for (Festival f : getAllFestivals()) {
+            if (f.getName().equals(festivalName)){
+                return f;
             }
         }
 
