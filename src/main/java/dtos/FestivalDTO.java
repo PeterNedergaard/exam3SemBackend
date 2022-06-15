@@ -31,7 +31,7 @@ public class FestivalDTO {
         this.duration = festival.getDuration();
     }
 
-    public static List<FestivalDTO> FestivalDTO(List<Festival> festivalList) {
+    public static List<FestivalDTO> getFestivalDTOs(List<Festival> festivalList) {
         List<FestivalDTO> festivalDTOList = new ArrayList<>();
 
         for (Festival f : festivalList) {

@@ -11,6 +11,12 @@ x-access-token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOiJ1c2VyIiwiZXh
 ###
 GET http://localhost:8080/sem3ExamBackend_war_exploded/api/info/allshows
 
+###
+GET http://localhost:8080/sem3ExamBackend_war_exploded/api/info/allguests
+
+###
+GET http://localhost:8080/sem3ExamBackend_war_exploded/api/info/allfestivals
+
 
 ###
 GET http://localhost:8080/sem3ExamBackend_war_exploded/api/info/showsbyguest/Email1
@@ -63,4 +69,27 @@ updatedName: "OldestFestival",
 updatedCity: "OldestCity",
 updatedStartDate: "OldestStartDate",
 updatedDuration: "10"
+}
+
+###
+POST http://localhost:8080/sem3ExamBackend_war_exploded/api/info/updateguest
+
+{
+email: "Email1",
+updatedName: "UpdatedName",
+updatedPhone: "UpdatedPhone",
+updatedEmail: "UpdatedEmail",
+updatedStatus: "UpdatedStatus"
+}
+
+###
+POST http://localhost:8080/sem3ExamBackend_war_exploded/api/info/updateshow
+
+{
+name: "NewShow",
+updatedName: "OldShow",
+updatedDuration: "30",
+updatedLocation: "OldLocation",
+updatedStartDate: "OldDate",
+updatedStartTime: "OldTime"
 }

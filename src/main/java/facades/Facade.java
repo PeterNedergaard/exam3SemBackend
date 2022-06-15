@@ -114,7 +114,7 @@ public class Facade implements Ifacade{
         em.merge(guestToUpdate);
         em.getTransaction().commit();
 
-        return guestToUpdate;
+        return em.find(Guest.class,getGuestByEmail(updatedGuest.getEmail()).getId());
     }
 
     @Override

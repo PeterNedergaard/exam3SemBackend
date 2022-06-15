@@ -96,6 +96,33 @@ public class Resource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("allfestivals")
+    public Response getAllFestivals() {
+
+        List<FestivalDTO> festivalDTOList = FestivalDTO.getFestivalDTOs(facade.getAllFestivals());
+
+        return Response
+                .ok()
+                .entity(gson.toJson(festivalDTOList))
+                .build();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("allguests")
+    public Response getAllGuests() {
+
+        List<GuestDTO> guestDTOList = GuestDTO.getGuestDTOs(facade.getAllGuests());
+
+        return Response
+                .ok()
+                .entity(gson.toJson(guestDTOList))
+                .build();
+    }
+
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("showsbyguest/{email}")
     public Response getShowsByGuest(@PathParam("email") String email) {
 
@@ -275,6 +302,82 @@ public class Resource {
         return Response
                 .ok()
                 .entity(new FestivalDTO(facade.updateFestival(festivalToUpdate,updatedFestival)))
+                .build();
+    }
+
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("updateguest")
+    public Response updateGuest(String jsonString) throws API_Exception {
+
+        Guest guestToUpdate;
+        String email;
+
+        Guest updatedGuest;
+        String updatedName;
+        String updatedPhone;
+        String updatedEmail;
+        String updatedStatus;
+
+        try{
+            JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
+            email = json.get("email").getAsString();
+            updatedName = json.get("updatedName").getAsString();
+            updatedPhone = json.get("updatedPhone").getAsString();
+            updatedEmail = json.get("updatedEmail").getAsString();
+            updatedStatus = json.get("updatedStatus").getAsString();
+
+        } catch (Exception e) {
+            throw new API_Exception("Malformed JSON Suplied", 400, e);
+        }
+
+        guestToUpdate = facade.getGuestByEmail(email);
+        updatedGuest = new Guest(updatedName,updatedPhone,updatedEmail,updatedStatus);
+
+        return Response
+                .ok()
+                .entity(new GuestDTO(facade.updateGuest(guestToUpdate,updatedGuest)))
+                .build();
+    }
+
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("updateshow")
+    public Response updateShow(String jsonString) throws API_Exception {
+
+        ShowEntity showToUpdate;
+        String name;
+
+        ShowEntity updatedShow;
+        String updatedName;
+        int updatedDuration;
+        String updatedLocation;
+        String updatedStartDate;
+        String updatedStartTime;
+
+        try{
+            JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
+            name = json.get("name").getAsString();
+            updatedName = json.get("updatedName").getAsString();
+            updatedDuration = json.get("updatedDuration").getAsInt();
+            updatedLocation = json.get("updatedLocation").getAsString();
+            updatedStartDate = json.get("updatedStartDate").getAsString();
+            updatedStartTime = json.get("updatedStartTime").getAsString();
+
+        } catch (Exception e) {
+            throw new API_Exception("Malformed JSON Suplied", 400, e);
+        }
+
+        showToUpdate = facade.getShowByName(name);
+        updatedShow = new ShowEntity(updatedName,updatedDuration,updatedLocation,updatedStartDate,updatedStartTime);
+
+        return Response
+                .ok()
+                .entity(new ShowDTO(facade.updateShow(showToUpdate,updatedShow)))
                 .build();
     }
 }

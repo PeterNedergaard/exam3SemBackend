@@ -310,5 +310,58 @@ public class ResourceTest {
         assertThat(updatedFestival.getName(), equalTo(expectedFestivalDTO.getName()));
     }
 
+    @Test
+    public void updateGuest() {
+        System.out.println("Testing to update a guest");
+
+        Guest updatedGuest = new Guest("NewName","NewPhone","NewEmail","NewStatus");
+
+        JSONObject json = new JSONObject();
+        json.put("email",guest1.getEmail());
+        json.put("updatedName",updatedGuest.getName());
+        json.put("updatedPhone",updatedGuest.getPhone());
+        json.put("updatedEmail",updatedGuest.getEmail());
+        json.put("updatedStatus",updatedGuest.getStatus());
+
+
+        JsonObject body = (JsonObject) JsonParser.parseString(json.toJSONString());
+
+        GuestDTO expectedGuestDTO = given()
+                .contentType("application/json").body(body)
+                .when()
+                .post("/info/updateguest")
+                .then()
+                .extract().body().jsonPath().getObject("",GuestDTO.class);
+
+        assertThat(updatedGuest.getName(), equalTo(expectedGuestDTO.getName()));
+    }
+
+    @Test
+    public void updateShow() {
+        System.out.println("Testing to update a show");
+
+        ShowEntity updatedShow = new ShowEntity("NewShow",45,"NewLocation","NewStartDate","NewStartTime");
+
+        JSONObject json = new JSONObject();
+        json.put("name",show1.getName());
+        json.put("updatedName",updatedShow.getName());
+        json.put("updatedDuration",updatedShow.getDuration());
+        json.put("updatedLocation",updatedShow.getLocation());
+        json.put("updatedStartDate",updatedShow.getStartDate());
+        json.put("updatedStartTime",updatedShow.getStartTime());
+
+
+        JsonObject body = (JsonObject) JsonParser.parseString(json.toJSONString());
+
+        ShowDTO expectedShowDTO = given()
+                .contentType("application/json").body(body)
+                .when()
+                .post("/info/updateshow")
+                .then()
+                .extract().body().jsonPath().getObject("",ShowDTO.class);
+
+        assertThat(updatedShow.getName(), equalTo(expectedShowDTO.getName()));
+    }
+
 
 }
