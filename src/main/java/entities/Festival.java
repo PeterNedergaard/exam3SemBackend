@@ -1,7 +1,5 @@
 package entities;
 
-import jdk.internal.dynalink.linker.LinkerServices;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;

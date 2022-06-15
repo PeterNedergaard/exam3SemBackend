@@ -1,7 +1,10 @@
 package facades;
 
+import entities.ShowEntity;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import java.util.List;
 
 public class Facade implements Ifacade{
 
@@ -21,4 +24,8 @@ public class Facade implements Ifacade{
         return instance;
     }
 
+    @Override
+    public List<ShowEntity> getAllShows() {
+        return null;
+    }
 }
