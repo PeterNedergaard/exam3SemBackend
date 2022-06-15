@@ -74,7 +74,12 @@ public class Facade implements Ifacade{
 
     @Override
     public Guest createGuest(Guest guest) {
-        return null;
+
+        em.getTransaction().begin();
+        em.persist(guest);
+        em.getTransaction().commit();
+
+        return em.find(Guest.class,guest.getId());
     }
 
     @Override

@@ -183,6 +183,12 @@ class IfacadeTest {
 
     @Test
     void createGuest() {
+        System.out.println("Test for creating a guest");
+
+        Guest expected = new Guest("NewName","NewPhone","NewEmail","NewStatus");
+        Guest actual = facade.createGuest(expected);
+
+        assertEquals(expected,actual);
     }
 
     @Test
