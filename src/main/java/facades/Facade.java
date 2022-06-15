@@ -99,7 +99,7 @@ public class Facade implements Ifacade{
         em.merge(festivalToUpdate);
         em.getTransaction().commit();
 
-        return em.find(Festival.class,getFestivalByName(updatedFestival.getName()).getId());
+        return em.find(Festival.class,festivalToUpdate.getId());
     }
 
     @Override
@@ -114,7 +114,7 @@ public class Facade implements Ifacade{
         em.merge(guestToUpdate);
         em.getTransaction().commit();
 
-        return em.find(Guest.class,getGuestByEmail(updatedGuest.getEmail()).getId());
+        return em.find(Guest.class,guestToUpdate.getId());
     }
 
     @Override
@@ -130,55 +130,19 @@ public class Facade implements Ifacade{
         em.merge(showToUpdate);
         em.getTransaction().commit();
 
-        return showToUpdate;
+        return em.find(ShowEntity.class,showToUpdate.getId());
     }
-
-
 
     @Override
     public List<Guest> getAllGuests() {
         return em.createQuery("SELECT g FROM Guest g",Guest.class).getResultList();
     }
 
-    @Override
-    public Guest getGuestByEmail(String email) {
-
-        for (Guest g : getAllGuests()) {
-            if (g.getEmail().equals(email)){
-                return g;
-            }
-        }
-
-        return null;
-    }
-
-    @Override
-    public ShowEntity getShowByName(String showName) {
-
-        for (ShowEntity s : getAllShows()) {
-            if (s.getName().equals(showName)){
-                return s;
-            }
-        }
-
-        return null;
-    }
 
     @Override
     public List<Festival> getAllFestivals() {
         return em.createQuery("SELECT f FROM Festival f",Festival.class).getResultList();
     }
 
-    @Override
-    public Festival getFestivalByName(String festivalName) {
-
-        for (Festival f : getAllFestivals()) {
-            if (f.getName().equals(festivalName)){
-                return f;
-            }
-        }
-
-        return null;
-    }
 
 }

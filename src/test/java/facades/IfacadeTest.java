@@ -122,16 +122,6 @@ class IfacadeTest {
     }
 
     @Test
-    void getShowByName() {
-        System.out.println("Test for getting specific show by name");
-
-        ShowEntity expected = show1;
-        ShowEntity actual = facade.getShowByName(show1.getName());
-
-        assertEquals(expected,actual);
-    }
-
-    @Test
     void getAllGuests() {
         System.out.println("Test for getting all guests");
 
@@ -141,22 +131,17 @@ class IfacadeTest {
         assertEquals(expected,actual);
     }
 
-    @Test
-    void getGuestByEmail() {
-        System.out.println("Test for getting specific guest by email");
-
-        Guest expected = guest1;
-        Guest actual = facade.getGuestByEmail("Email1");
-
-        assertEquals(expected,actual);
-    }
 
     @Test
     void getShowsByGuest() {
-        System.out.println("Test for getting a specific geusts shows");
+        System.out.println("Test for getting a specific guests shows");
+
+        EntityManager em = emf.createEntityManager();
+        Guest guest = em.find(Guest.class,guest1.getId());
+        em.close();
 
         int expected = 2;
-        int actual = facade.getShowsByGuest(facade.getGuestByEmail("Email1")).size();
+        int actual = facade.getShowsByGuest(guest).size();
 
         assertEquals(expected,actual);
     }
@@ -231,13 +216,4 @@ class IfacadeTest {
         assertEquals(expected,actual);
     }
 
-    @Test
-    void getFestivalByName() {
-        System.out.println("Test for getting specific festival by name");
-
-        Festival expected = festival1;
-        Festival actual = facade.getFestivalByName("Festival1");
-
-        assertEquals(expected,actual);
-    }
 }
