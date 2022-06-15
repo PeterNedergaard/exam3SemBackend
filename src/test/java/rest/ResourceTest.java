@@ -1,10 +1,14 @@
 package rest;
 
+import entities.Role;
+import entities.User;
+import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
 import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
 import io.restassured.parsing.Parser;
 import java.net.URI;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.UriBuilder;
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -12,10 +16,6 @@ import org.glassfish.grizzly.http.util.HttpStatus;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import static org.hamcrest.Matchers.equalTo;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 //Uncomment the line below, to temporarily disable this test
 //@Disabled
 
@@ -27,6 +27,7 @@ public class ResourceTest {
     static final URI BASE_URI = UriBuilder.fromUri(SERVER_URL).port(SERVER_PORT).build();
     private static HttpServer httpServer;
     private static EntityManagerFactory emf;
+    private static EntityManager em;
 
     static HttpServer startServer() {
         ResourceConfig rc = ResourceConfig.forApplication(new ApplicationConfig());
@@ -54,10 +55,44 @@ public class ResourceTest {
         httpServer.shutdownNow();
     }
 
-    // Setup the DataBase (used by the test-server and this test) in a known state BEFORE EACH TEST
     @BeforeEach
-    public void setUp() {
+    void setUp() {
 
+        emf = EMF_Creator.createEntityManagerFactoryForTest();
+        em = emf.createEntityManager();
+
+
+        User user = new User("user", "test123");
+        User admin = new User("admin", "test123");
+        User both = new User("user_admin", "test123");
+
+        Role userRole = new Role("user");
+        Role adminRole = new Role("admin");
+
+        user.addRole(userRole);
+        admin.addRole(adminRole);
+        both.addRole(userRole);
+        both.addRole(adminRole);
+
+        try{
+            em.getTransaction().begin();
+
+            em.persist(userRole);
+            em.persist(adminRole);
+            em.persist(user);
+            em.persist(admin);
+            em.persist(both);
+
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+
+    }
+
+    @AfterEach
+    void tearDown() {
+        emf.close();
     }
 
     @Test
