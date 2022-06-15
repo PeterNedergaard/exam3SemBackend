@@ -216,4 +216,15 @@ class IfacadeTest {
         assertEquals(expected,actual);
     }
 
+    @Test
+    void deleteShow() {
+        System.out.println("Test for deleting a show");
+
+
+        ShowEntity expected = null;
+        ShowEntity actual = facade.deleteShow(show2);
+
+        assertEquals(expected,actual);
+    }
+
 }

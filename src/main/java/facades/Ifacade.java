@@ -26,6 +26,8 @@ public interface Ifacade {
 
     ShowEntity updateShow(ShowEntity showToUpdate, ShowEntity updatedShow);
 
+    ShowEntity deleteShow(ShowEntity show);
+
     List<Guest> getAllGuests();
 
     List<Festival> getAllFestivals();

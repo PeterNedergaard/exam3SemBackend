@@ -43,13 +43,18 @@ public class Facade implements Ifacade{
 
     @Override
     public Guest addGuestToShow(Guest guest, ShowEntity show) {
-        guest.addShow(show);
+
+        //If the guests showList already contains the show, it wont be added
+        if (!guest.getShowList().contains(show)){
+            guest.addShow(show);
+        }
 
         em.getTransaction().begin();
         em.merge(guest);
         em.merge(show);
         em.getTransaction().commit();
 
+        //If successful, will return the guest
         if(show.getGuestList().contains(guest)){
             return guest;
         }
@@ -131,6 +136,22 @@ public class Facade implements Ifacade{
         em.getTransaction().commit();
 
         return em.find(ShowEntity.class,showToUpdate.getId());
+    }
+
+    @Override
+    public ShowEntity deleteShow(ShowEntity show) {
+
+        //Removes show from guests list before removing show
+        for (Guest g : show.getGuestList()) {
+            g.getShowList().remove(show);
+        }
+
+        em.getTransaction().begin();
+        em.remove(em.merge(show));
+        em.getTransaction().commit();
+
+        //Should return null if successful
+        return em.find(ShowEntity.class, show.getId());
     }
 
     @Override
